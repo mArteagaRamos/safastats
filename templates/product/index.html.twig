@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Productos{% endblock %}
+
+{% block body %}
+
+    <h1 class="mb-4">Productos de maquillaje</h1>
+
+    <div class="row row-cols1 row-cols-md-3 g-4">
+        {% for producto in productos %}
+            <div class="col">
+                {% include 'components/product_card.html.twig' with {'producto': producto} %}
+            </div>
+        {% else %}
+            <p>No hay productos disponibles</p>
+        {% endfor %}
+    </div>
+{% endblock %}
