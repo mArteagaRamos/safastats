@@ -23,8 +23,8 @@ class Review
     #[ORM\JoinColumn(name: 'id_producto', nullable: false)]
     private ?Producto $producto = null;
 
-    #[ORM\Column(name: 'rating')]
-    private ?int $rating = null;
+    #[ORM\Column(name: 'stars', type: Types::INTEGER)]
+    private ?int $stars = null;
 
     #[ORM\Column(name: 'reviews_text', type: Types::TEXT, nullable: true)]
     private ?string $reviewsText = null;
@@ -58,14 +58,14 @@ class Review
         return $this;
     }
 
-    public function getRating(): ?int
+    public function getStars(): ?int
     {
-        return $this->rating;
+        return $this->stars;
     }
 
-    public function setRating(int $rating): static
+    public function setStars(int $stars): static
     {
-        $this->rating = $rating;
+        $this->stars = $stars;
 
         return $this;
     }

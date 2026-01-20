@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UsuarioRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'usuarios')]
@@ -22,7 +23,7 @@ class Usuario
     #[ORM\Column(name: 'email', length: 100)]
     private ?string $email = null;
 
-    #[ORM\Column(name: 'password', length: 255)]
+    #[ORM\Column(name: 'password', type: Types::TEXT)]
     private ?string $password = null;
 
     /**
@@ -30,6 +31,9 @@ class Usuario
      */
     #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'usuario')]
     private Collection $reviews;
+
+    #[ORM\Column]
+    private ?int $role = null;
 
     public function __construct()
     {
@@ -110,6 +114,18 @@ class Usuario
                 $review->setUsuario(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRole(): ?int
+    {
+        return $this->role;
+    }
+
+    public function setRole(int $role): static
+    {
+        $this->role = $role;
 
         return $this;
     }
