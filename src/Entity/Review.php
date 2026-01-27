@@ -15,15 +15,15 @@ class Review
     #[ORM\Column(name: 'id')]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'reviews')]
-    #[ORM\JoinColumn(name: 'id_usuario', nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Usuario::class, inversedBy: 'reviews')]
+    #[ORM\JoinColumn(name: 'id_usuario', nullable: false, onDelete: 'CASCADE')]
     private ?Usuario $usuario = null;
 
-    #[ORM\ManyToOne(inversedBy: 'reviews')]
-    #[ORM\JoinColumn(name: 'id_producto', nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Producto::class, inversedBy: 'reviews')]
+    #[ORM\JoinColumn(name: 'id_producto', nullable: false, onDelete: 'CASCADE')]
     private ?Producto $producto = null;
 
-    #[ORM\Column(name: 'stars', type: Types::INTEGER)]
+    #[ORM\Column(name: 'stars', type: Types::SMALLINT)]
     private ?int $stars = null;
 
     #[ORM\Column(name: 'reviews_text', type: Types::TEXT, nullable: true)]

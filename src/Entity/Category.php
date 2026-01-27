@@ -11,18 +11,19 @@ use Doctrine\ORM\Mapping\InverseJoinColumn;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 
+#[ORM\Table(name: 'category')]
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: 'id')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(name: 'name', length: 100)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(name: 'image', type: Types::TEXT)]
     private ?string $image = null;
 
     /**
@@ -76,21 +77,18 @@ class Category
         return $this->productos;
     }
 
-    public function addProducto(self $producto): static
+    public function addProducto(Producto $producto): static
     {
         if (!$this->productos->contains($producto)) {
             $this->productos->add($producto);
-            $producto->addProducto($this);
         }
 
         return $this;
     }
 
-    public function removeProducto(self $producto): static
+    public function removeProducto(Producto $producto): static
     {
-        if ($this->productos->removeElement($producto)) {
-            $producto->removeProducto($this);
-        }
+        $this->productos->removeElement($producto);
 
         return $this;
     }

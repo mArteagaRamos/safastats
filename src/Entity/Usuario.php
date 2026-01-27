@@ -7,10 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Table(name: 'usuarios')]
 #[ORM\Entity(repositoryClass: UsuarioRepository::class)]
-class Usuario
+class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -26,18 +28,19 @@ class Usuario
     #[ORM\Column(name: 'password', type: Types::TEXT)]
     private ?string $password = null;
 
+    #[ORM\Column(name:'role', type: 'json')]
+    private array $role = [];
+
     /**
      * @var Collection<int, Review>
      */
     #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'usuario')]
     private Collection $reviews;
 
-    #[ORM\Column]
-    private ?int $role = null;
-
     public function __construct()
     {
         $this->reviews = new ArrayCollection();
+        $this->role = ['ROLE_USER'];
     }
 
     public function getId(): ?int
@@ -118,15 +121,29 @@ class Usuario
         return $this;
     }
 
-    public function getRole(): ?int
+    public function getRole(): array
     {
         return $this->role;
     }
 
-    public function setRole(int $role): static
+    public function setRole(array $role): static
     {
         $this->role = $role;
 
         return $this;
+    }
+
+    public function getRoles(): array
+    {
+        $roles = $this->role;
+
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
     }
 }

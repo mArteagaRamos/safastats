@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Productos{% endblock %}
+
+{% block body %}
+
+    <div class="container d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+        <div class="row g-4 justify-content-center w-100">
+
+            <!-- Rankings -->
+            <div class="col-10 col-sm-6 col-md-3">
+                <div class="card text-center shadow-sm border-0 card-hover" role="button">
+                    <div class="card-body py-5">
+                        <img src="{{ asset('img/ranking.png') }}"
+                             alt="Rankings"
+                             width="56"
+                             height="56"
+                             class="mb-3">
+                        <h5 class="fw-semibold mb-0">Rankings</h5>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews -->
+            <div class="col-10 col-sm-6 col-md-3">
+                <div class="card text-center shadow-sm border-0 card-hover" role="button">
+                    <div class="card-body py-5">
+                        <img src="{{ asset('img/reviews.png') }}"
+                             alt="Reviews"
+                             width="56"
+                             height="56"
+                             class="mb-3">
+                        <h5 class="fw-semibold mb-0">Reviews</h5>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin -->
+            <div class="col-10 col-sm-6 col-md-3">
+                <div class="card text-center shadow-sm border-0 card-hover" role="button">
+                    <div class="card-body py-5">
+                        <img src="{{ asset('img/admin.png') }}"
+                             alt="Admin"
+                             width="56"
+                             height="56"
+                             class="mb-3">
+                        <h5 class="fw-semibold mb-0">Admin</h5>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="col-10 col-sm-6 col-md-3">
+                <div class="card text-center shadow-sm border-0 card-hover" role="button">
+                    <div class="card-body py-5">
+                        <img src="{{ asset('img/stats.png') }}"
+                             alt="Stats"
+                             width="56"
+                             height="56"
+                             class="mb-3">
+                        <h5 class="fw-semibold mb-0">Stats</h5>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

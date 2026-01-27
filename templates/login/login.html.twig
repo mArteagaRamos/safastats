@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-center align-content-center" style="min-height: 65vh;">
+        <div class="card shadow-sm p-4" style="max-width: 400px; width: 100%;">
+            {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </div>
+            {% endif %}
+
+            {% if app.user %}
+                <div class="alert alert-info mb-3">
+                    Has iniciado sesión como {{ app.user.userIdentifier }}.
+                    <a href="{{ path('app_logout') }}" class="text-decoration-none" style="color: var(--primary-color)">Cerrar sesión</a>
+                </div>
+            {% endif %}
+
+            <h2 class="text-center mb-4 fw-bold" style="color: var(--primary-color)">Iniciar Sesión</h2>
+
+            <form method="post" action="{{ path('app_login') }}">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <div class="mb-3">
+                    <label for="username" class="form-label">Email</label>
+                    <input type="text"
+                           id="username"
+                           name="_username"
+                           value="{{ last_username }}"
+                           class="form-control"
+                           placeholder="Ingresa tu usuario"
+                           autocomplete="username"
+                           required
+                           autofocus>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password"
+                           id="password"
+                           name="_password"
+                           class="form-control"
+                           placeholder="Contraseña"
+                           autocomplete="current-password"
+                           required>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mb-3">Iniciar sesión</button>
+            </form>
+
+            <div class="text-center">
+                <span class="text-muted">¿No tienes cuenta?</span>
+                <a href="{{ path('app_register') }}" class="fw-semibold" style="color: var(--primary-color)">Regístrate</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
