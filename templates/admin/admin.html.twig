@@ -8,7 +8,7 @@
 
             <!-- Data Load -->
             <div class="col-10 col-md-3">
-                <a href="{{ path('data_loa_api') }}" class="text-decoration-none text-white">
+                <a href="{{ path('data_load_api') }}" class="text-decoration-none text-white">
                     <div class="card text-center text-white" style="background-color: var(--night-bordeaux);">
                         <div class="card-body py-5">
                             <img src="{{ asset('img/data.png') }}" alt="Data Load" width="64" height="64" class="icon-white mb-3">
@@ -18,39 +18,39 @@
                 </a>
             </div>
 
-            <!-- Categorías -->
-            <div class="col-10 col-md-3">
-                <a href="{{ path('categories') }}" class="text-decoration-none text-white">
-                    <div class="card text-center text-white" style="background-color: var(--dark-amaranth);">
-                        <div class="card-body py-5">
-                            <img src="{{ asset('img/categorias.png') }}" alt="Categories" width="64" height="64" class="icon-white mb-3">
-                            <h3 class="card-title">Categories</h3>
-                        </div>
-                    </div>
-                </a>
-            </div>
+{#            <!-- Categorías -->#}
+{#            <div class="col-10 col-md-3">#}
+{#                <a href="{{ path('categories') }}" class="text-decoration-none text-white">#}
+{#                    <div class="card text-center text-white" style="background-color: var(--dark-amaranth);">#}
+{#                        <div class="card-body py-5">#}
+{#                            <img src="{{ asset('img/categorias.png') }}" alt="Categories" width="64" height="64" class="icon-white mb-3">#}
+{#                            <h3 class="card-title">Categories</h3>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </a>#}
+{#            </div>#}
 
-            <!-- ???? -->
-            <div class="col-10 col-md-3">
-                <a href="{{ path('???') }}" class="text-decoration-none text-white">
-                    <div class="card text-center text-white" style="background-color: var(--cherry-rose);">
-                        <div class="card-body py-5">
-                            <img src="{{ asset('img/admin_blanco.png') }}" alt="???" width="64" height="64" class="icon-white mb-3">
-                            <h3 class="card-title">???</h3>
-                        </div>
-                    </div>
-                </a>
-            </div>
+{#            <!-- ???? -->#}
+{#            <div class="col-10 col-md-3">#}
+{#                <a href="{{ path('???') }}" class="text-decoration-none text-white">#}
+{#                    <div class="card text-center text-white" style="background-color: var(--cherry-rose);">#}
+{#                        <div class="card-body py-5">#}
+{#                            <img src="{{ asset('img/admin_blanco.png') }}" alt="???" width="64" height="64" class="icon-white mb-3">#}
+{#                            <h3 class="card-title">???</h3>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </a>#}
+{#            </div>#}
 
-            <!-- Users Panel -->
-            <div class="col-10 col-md-3">
-                <div class="card text-center text-white" style="background-color: var(--rosewood);" role="button" onclick="alert('Solo administradores pueden acceder');">
-                    <div class="card-body py-5">
-                        <img src="{{ asset('img/admin.png') }}" alt="Users Panel" width="64" height="64" class="icon-white mb-3">
-                        <h3 class="card-title">Users Panel</h3>
-                    </div>
-                </div>
-            </div>
+{#            <!-- Users Panel -->#}
+{#            <div class="col-10 col-md-3">#}
+{#                <div class="card text-center text-white" style="background-color: var(--rosewood);" role="button" onclick="alert('Solo administradores pueden acceder');">#}
+{#                    <div class="card-body py-5">#}
+{#                        <img src="{{ asset('img/admin.png') }}" alt="Users Panel" width="64" height="64" class="icon-white mb-3">#}
+{#                        <h3 class="card-title">Users Panel</h3>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
         </div>
     </div>
 {% endblock %}

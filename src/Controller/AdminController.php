@@ -37,7 +37,7 @@ final class AdminController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        $limit = 50;
+        $limit = 100;
 
         //Petición a mi API
         $response = $httpClient->request(

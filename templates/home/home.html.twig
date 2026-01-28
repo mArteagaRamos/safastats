@@ -50,10 +50,14 @@
                         </div>
                     </a>
                 {% else %}
-                    <div class="card text-center text-white bg-yellow card-hover" role="button" onclick="alert('Solo pueden acceder los administradores.');">
+                    <div class="card text-center shadow-sm border-0 card-hover" role="button" onclick="alert('Solo pueden acceder los administradores.');">
                         <div class="card-body py-5">
-                            <img src="{{ asset('img/admin.png') }}" alt="Admin" width="64" height="64" class="icon-white mb-3">
-                            <h3 class="card-title">Admin</h3>
+                            <img src="{{ asset('img/admin.png') }}"
+                                 alt="Admin"
+                                 width="56"
+                                 height="56"
+                                 class="mb-3">
+                            <h5 class="fw-semibold mb-0">Admin</h5>
                         </div>
                     </div>
                 {% endif %}
@@ -72,7 +76,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 {% endblock %}
