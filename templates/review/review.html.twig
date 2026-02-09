@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reviews{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2 class="mb-4 text-center">Elije un producto</h2>
+
+        <div class="row g-4">
+            {% for producto in productos %}
+                <div class="col-6 col-md-3 col-lg-2">
+                    <div class="card h-100 shadow-sm card-hover">
+                        <img src="{{ producto.imageLink }}"
+                            class="card-img-top"
+                            alt="{{ producto.name }}">
+
+                        <div class="card-body text-center">
+                            <h6 class="card-title">{{ producto.name }}</h6>
+
+                            <a href="{{ path('app_review_product', {id: producto.id}) }}"
+                               class="btn btn-sm mt-2"
+                               style="background: #a8325e; color: white">
+                                Review
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{{ path('app_reviews', {offset: offset + limit}) }}"
+               class="btn"
+               style="background: #6d1b3b; color: white">
+                Cargar más
+            </a>
+        </div>
+    </div>
+{% endblock %}

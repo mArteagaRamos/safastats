@@ -172,7 +172,7 @@ class Producto
     {
         if (!$this->reviews->contains($review)) {
             $this->reviews->add($review);
-            $review->setUsuario($this);
+            $review->setProducto($this);
         }
 
         return $this;
@@ -182,8 +182,8 @@ class Producto
     {
         if ($this->reviews->removeElement($review)) {
             // set the owning side to null (unless already changed)
-            if ($review->getUsuario() === $this) {
-                $review->setUsuario(null);
+            if ($review->getProducto() === $this) {
+                $review->setProducto(null);
             }
         }
 
