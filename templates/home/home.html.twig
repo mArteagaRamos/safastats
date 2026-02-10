@@ -22,16 +22,18 @@
 
             <!-- Reviews -->
             <div class="col-10 col-sm-6 col-md-3">
-                <div class="card text-center shadow-sm border-0 card-hover" role="button">
-                    <div class="card-body py-5">
-                        <img src="{{ asset('img/reviews.png') }}"
-                             alt="Reviews"
-                             width="56"
-                             height="56"
-                             class="mb-3">
-                        <h5 class="fw-semibold mb-0">Reviews</h5>
+                <a href="{{ path('app_reviews') }}" class="text-decoration-none">
+                    <div class="card text-center shadow-sm border-0 card-hover" role="button">
+                        <div class="card-body py-5">
+                            <img src="{{ asset('img/reviews.png') }}"
+                                 alt="Reviews"
+                                 width="56"
+                                 height="56"
+                                 class="mb-3">
+                            <h5 class="fw-semibold mb-0">Reviews</h5>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
 
             <!-- Admin -->

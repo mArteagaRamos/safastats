@@ -4,22 +4,52 @@
 
 {% block body %}
     <div class="container mt-5">
-        <h2 class="mb-4 text-center">Elije un producto</h2>
 
+        <h2 class="mb-4 text-center" style="color:#6d1b3b;">Elige un producto</h2>
+
+        {# FILTROS POR PRODUCT_TYPE #}
+        <div class="mb-4 d-flex flex-wrap justify-content-center gap-2">
+            <a href="{{ path('app_reviews') }}"
+               class="btn {{ currentType is null ? 'btn-dark' : 'btn-outline-dark' }}">
+                Todos
+            </a>
+            {% for type in productTypes %}
+                <a href="{{ path('app_reviews', {type: type}) }}"
+                   class="btn {{ currentType == type ? 'btn-dark' : 'btn-outline-dark' }}">
+                    {{ type|capitalize }}
+                </a>
+            {% endfor %}
+        </div>
+
+        {# GRID DE PRODUCTOS #}
         <div class="row g-4">
-            {% for producto in productos %}
+            {% for row in productos %}
+                {% set producto = row.producto %}
+                {% set avgStars = row.avgStars|default(0) %}
+
                 <div class="col-6 col-md-3 col-lg-2">
                     <div class="card h-100 shadow-sm card-hover">
                         <img src="{{ producto.imageLink }}"
-                            class="card-img-top"
-                            alt="{{ producto.name }}">
+                             class="card-img-top"
+                             alt="{{ producto.name }}">
 
                         <div class="card-body text-center">
                             <h6 class="card-title">{{ producto.name }}</h6>
 
+                            {# Media de estrellas #}
+                            <div class="mb-2">
+                                {% for i in 1..5 %}
+                                    {% if i <= avgStars|round(0, 'floor') %}
+                                        <i class="bi bi-star-fill" style="color:#c9184a;"></i>
+                                    {% else %}
+                                        <i class="bi bi-star" style="color:#c9184a;"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+
                             <a href="{{ path('app_review_product', {id: producto.id}) }}"
                                class="btn btn-sm mt-2"
-                               style="background: #a8325e; color: white">
+                               style="background: #a8325e; color: white;">
                                 Review
                             </a>
                         </div>
@@ -28,12 +58,15 @@
             {% endfor %}
         </div>
 
-        <div class="text-center mt-4">
-            <a href="{{ path('app_reviews', {offset: offset + limit}) }}"
-               class="btn"
-               style="background: #6d1b3b; color: white">
-                Cargar más
-            </a>
-        </div>
+        {# BOTÓN CARGAR MÁS #}
+        {% if productos|length == limit %}
+            <div class="text-center mt-4">
+                <a href="{{ path('app_reviews', {offset: offset + limit, type: currentType}) }}"
+                   class="btn"
+                   style="background: #6d1b3b; color: white;">
+                    Cargar más
+                </a>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

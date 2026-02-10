@@ -1,107 +1,122 @@
-{% extends '../base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}{{ producto.name }}{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">{{ message }}</div>
-    {% enfor %}
-    {% for message in app.flashes('danger') %}
-        <div class="alert alert-danger">{{ message }}</div>
-    {% endfor %}
+    <div class="container mt-5">
 
-    <div class="row">
-        <div class="col-md-4 text-center">
-            <img src="{{ producto.imageLink }}"
-                 class="img-fluid rounded shadow-sm"
-                 alt="{{ producto.name }}">
-        </div>
+        {# Mensajes flash #}
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+        {% for message in app.flashes('danger') %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
 
-        <div class="col-md-8">
-            <h2 style="color: #6d1b3b">{{ producto.name }}</h2>
+        <div class="row">
+            {# Imagen del producto #}
+            <div class="col-md-4 text-center mb-4">
+                <img src="{{ producto.imageLink }}"
+                     class="img-fluid rounded shadow-sm"
+                     alt="{{ producto.name }}">
+            </div>
 
-            <p class="text-muted">{{ producto.brand }} · {{ producto.productType }}</p>
+            {# Detalles del producto #}
+            <div class="col-md-8">
+                <h2 class="fw-bold">{{ producto.name }}</h2>
 
-            {% if average %}
-                <p>
-                    <strong>Rating:</strong>
+                {% if producto.brand %}
+                    <p><strong>Marca:</strong> {{ producto.brand }}</p>
+                {% endif %}
+                {% if producto.productType %}
+                    <p><strong>Tipo:</strong> {{ producto.productType }}</p>
+                {% endif %}
+                {% if producto.productCategory %}
+                    <p><strong>Categoría:</strong> {{ producto.productCategory }}</p>
+                {% endif %}
+                {% if producto.description %}
+                    <p>{{ producto.description }}</p>
+                {% endif %}
+                {% if producto.productLink %}
+                    <a href="{{ producto.productLink }}" target="_blank"
+                       class="btn btn-sm mb-3" style="background: #a8325e; color: white">
+                        Ver producto
+                    </a>
+                {% endif %}
+
+                {# Media de estrellas #}
+                <div class="mt-2 mb-3">
+                    <strong>Valoración media:</strong>
                     {% for i in 1..5 %}
-                        {% if i <= average %}
+                        {% if i <= avgStars|round(0, 'floor') %}
                             <i class="bi bi-star-fill text-warning"></i>
                         {% else %}
                             <i class="bi bi-star text-warning"></i>
                         {% endif %}
                     {% endfor %}
-                    <span class="ms-2">({{ average }}/5)</span>
-                </p>
-                {% else %}
-                <p class="text-muted">No hay reviews todavía</p>
-            {% endif %}
-
-            <p>{{ product.descripcion }}</p>
+                    <span class="ms-2">({{ avgStars|number_format(1, '.', '') }})</span>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <hr class="my-5">
+        <hr class="my-4">
 
-    {# FORMULARIO PARA LA REVIEW #}
-    {% if app.user %}
-        <h4 style="color: #a8325e">Escribe tu review</h4>
+        {# FORMULARIO PARA ESCRIBIR REVIEW #}
+        {% if app.user %}
+            <h4 style="color: #a8325e" class="mb-3">Escribe tu review</h4>
 
-        <form method="post" class="mb-5">
-            <div class="mb-3">
-                <label class="form-label">Estrellas</label>
-                <select name="stars" class="form-select" required>
-                    <option value="">Elige</option>
+            <form method="post" class="mb-5">
+                <div class="mb-3">
+                    <label class="form-label">Estrellas</label>
+                    <select name="stars" class="form-select" required>
+                        <option value="">Elige</option>
+                        {% for i in 1..5 %}
+                            <option value="{{ i }}">{{ i }} estrella{{ i > 1 ? 's' }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Review</label>
+                    <textarea name="review"
+                              class="form-control"
+                              rows="4"
+                              placeholder="Cuéntanos lo que piensas..."></textarea>
+                </div>
+
+                <button class="btn" style="background: #6d1b3b; color: white">
+                    Guardar reseña
+                </button>
+            </form>
+        {% else %}
+            <div class="alert alert-warning">
+                Debes <a href="{{ path('app_login') }}">iniciar sesión</a> para escribir una review.
+            </div>
+        {% endif %}
+
+        {# LISTADO DE REVIEWS #}
+        <h4 style="color: #6d1b3b" class="mb-3">Reviews</h4>
+
+        {% for review in reviews %}
+            <div class="border rounded p-3 mb-3 shadow-sm">
+                <strong>{{ review.usuario.username }}</strong>
+
+                <div>
                     {% for i in 1..5 %}
-                        <option value="{{ i }}">{{ i }} star{{ i > 1 ? 's' }}</option>
+                        {% if i <= review.stars %}
+                            <i class="bi bi-star-fill text-warning"></i>
+                        {% else %}
+                            <i class="bi bi-star text-warning"></i>
+                        {% endif %}
                     {% endfor %}
-                </select>
+                </div>
+
+                {% if review.reviewsText %}
+                    <p class="mt-2">{{ review.reviewsText }}</p>
+                {% endif %}
             </div>
-
-            <div class="mb-3">
-                <label class="form-label">Review</label>
-                <textarea name="review"
-                        class="form-control"
-                        rows="4"
-                        placeholder="Cuéntanos lo que piensas..."></textarea>
-            </div>
-
-            <button class="btn"
-                    style="background: #6d1b3b; color: white">
-                Guardar reseña
-            </button>
-        </form>
-    {% else %}
-        <div class="alert alert-warning">
-            Debes <a href="{{ path('app_login') }}">iniciar sesión</a> para escribir una review.
-        </div>
-    {% endif %}
-
-    {#  LISTADO DE REVIEWS  #}
-    <h4 style="color: #6d1b3b">Reviews</h4>
-
-    {% for review in reviews %}
-        <div class="border rounded p-3 mb-3">
-            <strong>{{ review.usuario.username }}</strong>
-
-            <div>
-                {% for i in 1..5 %}
-                    {% if i <= review.stars %}
-                        <i class="bi bi-star-fill text-warning"></i>
-                    {% else %}
-                        <i class="bi bi-star text-warning"></i>
-                    {% endif %}
-                {% endfor %}
-            </div>
-
-            {% if review.reviewsText %}
-                <p class="mt-2">{{ review.reviewsText }}</p>
-            {% endif %}
-        </div>
-    {% else %}
-        <p class="text-muted">No hay reviews todavía.</p>
-    {% endfor %}
-</div>
+        {% else %}
+            <p class="text-muted">No hay reviews todavía.</p>
+        {% endfor %}
+    </div>
 {% endblock %}

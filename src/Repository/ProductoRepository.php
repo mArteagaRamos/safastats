@@ -16,6 +16,50 @@ class ProductoRepository extends ServiceEntityRepository
         parent::__construct($registry, Producto::class);
     }
 
+    public function findByTypeWithAvgRating(
+        ?string $type = null,
+        int $limit = 20,
+        int $offset = 0
+    ): array {
+        $qb = $this->createQueryBuilder('p')
+            ->leftJoin('p.reviews', 'r')
+            ->addSelect('p')
+            ->addSelect('COALESCE(AVG(r.stars), 0) AS avgRating')
+            ->groupBy('p.id')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        if ($type) {
+            $qb->andWhere('p.productType = :type')
+                ->setParameter('type', $type);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findAllWithAvgRating(int $limit = 20, int $offset = 0): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->leftJoin('p.reviews', 'r')
+            ->addSelect('COALESCE(AVG(r.stars), 0) AS avgStars')
+            ->groupBy('p.id')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findAllProductTypes(): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('DISTINCT p.productType')
+            ->where('p.productType IS NOT NULL');
+
+        $result = $qb->getQuery()->getResult();
+
+        return array_map(fn($row) => $row['productType'], $result);
+    }
+
     //    /**
     //     * @return Producto[] Returns an array of Producto objects
     //     */
