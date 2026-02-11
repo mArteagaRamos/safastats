@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Producto;
+use App\Repository\ProductoRepository;
+use App\Repository\ReviewRepository;
+use App\Repository\UsuarioRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -83,6 +86,49 @@ final class AdminController extends AbstractController
         return $this->render('admin/admin.html.twig', [
             'controller_name' => 'AdminController',
             'content' => $content,
+        ]);
+    }
+
+    #[Route('/admin/productos', name:'productos')]
+    public function showProductos(
+        ProductoRepository $productoRepository,
+        ReviewRepository $reviewRepository
+    ): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $productos = $productoRepository->findAll();
+
+        $productosMedia = [];
+        foreach ($productos as $producto) {
+            $avgStars = $reviewRepository->createQueryBuilder('r')
+                ->select('AVG(r.stars) as avgStars')
+                ->where('r.producto = :producto')
+                ->setParameter('producto', $producto)
+                ->getQuery()
+                ->getSingleScalarResult();
+
+            $productosMedia[] = [
+                'producto' => $producto,
+                'avgStars' => $avgStars ?: 0
+            ];
+        }
+        return $this->render('admin/productos.html.twig', [
+            'productos' => $productosMedia
+        ]);
+    }
+
+    #[Route('/admin/usuarios', name:'usuarios')]
+    public function showUsuarios(
+        UsuarioRepository $usuarioRepository
+    ): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $users = $usuarioRepository->findAll();
+
+        return $this->render('admin/usuarios.html.twig', [
+            'users' => $users
         ]);
     }
 }

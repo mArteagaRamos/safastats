@@ -37,10 +37,18 @@ security:
 
     # Note: Only the *first* matching rule is applied
     access_control:
+        # ======= PUBLIC ======= #
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/register, roles: PUBLIC_ACCESS }
+        - { path: ^/logout, roles: PUBLIC_ACCESS }
         - { path: ^/$, roles: PUBLIC_ACCESS }
+        - { path: ^/product, roles: PUBLIC_ACCESS }
+        # ======= REVIEWS ======= #
+        - { path: ^/reviews, roles: PUBLIC_ACCESS }
+        - { path: ^/reviews/product, roles: PUBLIC_USER }
+        # ======= ADMIN ======= #
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/edit, roles: ROLE_ADMIN }
         - { path: ^/category, roles: ROLE_ADMIN }
 
 when@test:

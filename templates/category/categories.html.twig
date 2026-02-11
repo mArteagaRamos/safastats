@@ -3,27 +3,59 @@
 {% block title %}Nueva categoría{% endblock %}
 
 {% block body %}
+<div class="container mt-5">
+    <h2 class="mb-4">Categorías</h2>
 
-    <div class="container mt-5">
-        <h2>Crear nueva categoría</h2>
+    {#  Mensajes flash  {#}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+    {% for message in app.flashes('danger') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
 
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-success">{{ message }}</div>
-        {% endfor %}
+    {#  Lista de categorías  #}
+    {% if categories is not empty %}
+        <div class="mb-5">
+            <h4>Categorías existentes</h4>
+            <ul class="list-group">
+                {% for cat in categories %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ cat.name }}</strong>
+                            {% if cat.image %}
+                                <img src="{{ cat.image }}" alt="{{ cat.name }}" width="40" class="ms-2 rounded">
+                            {% endif %}
+                        </div>
+                        <div class="btn-group">
+                            <a href="{{ path('categories_edit', {id: cat.id}) }}" class="btn btn-sm btn-outline-primary">Editar</a>
+                            <a href="{{ path('categories_delete', {id: cat.id}) }}" class="btn btn-sm btn-outline-danger"
+                               onclick="return confirm('¿Estás seguro de eliminar esta categoría?');">Eliminar</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {#  Formulario crear / editar  #}
+    <div class="card p-4 shadow-sm">
+        <h4>{{ editing ? 'Editar categoría' : 'Crear nueva categoría' }}</h4>
 
         <form method="post">
             <div class="mb-3">
                 <label class="form-label">Nombre de la categoría</label>
-                <input type="text" name="name" class="form-control" required>
+                <input type="text" name="name" class="form-control"
+                       value="{{ editing ? categoryToEdit.name : '' }}" required>
             </div>
 
             <div class="mb-4">
                 <label class="form-label">Imagen de la categoría</label>
-                <input type="text" name="image" class="form-control" placeholder="https://..." required>
+                <input type="text" name="image" class="form-control"
+                       placeholder="https://..." value="{{ editing ? categoryToEdit.image : '' }}" required>
             </div>
 
-            <h4>Seleccionar productos</h4>
-
+            <h5>Seleccionar productos</h5>
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                 <tr>
@@ -37,7 +69,8 @@
                 {% for product in products %}
                     <tr>
                         <td>
-                            <input type="checkbox" name="items[]" value="{{ product.id }}">
+                            <input type="checkbox" name="items[]" value="{{ product.id }}"
+                                   {% if editing and categoryToEdit.getProductos().contains(product) %}checked{% endif %}>
                         </td>
                         <td>{{ product.name }}</td>
                         <td>{{ product.brand ?? '-' }}</td>
@@ -49,10 +82,10 @@
 
             <div class="text-center mt-4">
                 <button class="btn btn-primary px-5">
-                    Guardar categoría
+                    {{ editing ? 'Actualizar categoría' : 'Guardar categoría' }}
                 </button>
             </div>
         </form>
     </div>
-
+</div>
 {% endblock %}
