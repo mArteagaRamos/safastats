@@ -17,9 +17,10 @@ use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+#[Route('/admin')]
 final class AdminController extends AbstractController
 {
-    #[Route('/admin', name: 'app_admin')]
+    #[Route('', name: 'app_admin')]
     public function index(): Response
     {
         return $this->render('admin/admin.html.twig');
@@ -32,7 +33,7 @@ final class AdminController extends AbstractController
      * @throws DecodingExceptionInterface
      * @throws ClientExceptionInterface
      */
-    #[Route('/admin/productos/load', name: 'data_load_api', defaults: ['offset' => 0])]
+    #[Route('/productos/load', name: 'data_load_api', defaults: ['offset' => 0])]
     public function dataLoad(
         int $offset,
         HttpClientInterface $httpClient,
@@ -89,7 +90,7 @@ final class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/productos', name:'productos')]
+    #[Route('/productos', name:'productos')]
     public function showProductos(
         ProductoRepository $productoRepository,
         ReviewRepository $reviewRepository
@@ -118,7 +119,7 @@ final class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/usuarios', name:'usuarios')]
+    #[Route('/usuarios', name:'usuarios')]
     public function showUsuarios(
         UsuarioRepository $usuarioRepository
     ): Response

@@ -60,6 +60,18 @@ class ProductoRepository extends ServiceEntityRepository
         return array_map(fn($row) => $row['productType'], $result);
     }
 
+    public function findTopRated(int $limit = 5): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->leftJoin('p.reviews', 'r')
+            ->addSelect('COALESCE(AVG(r.stars), 0) AS avgStars')
+            ->groupBy('p.id')
+            ->orderBy('avgStars', 'DESC')
+            ->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
+
     //    /**
     //     * @return Producto[] Returns an array of Producto objects
     //     */

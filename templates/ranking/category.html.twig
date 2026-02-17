@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ranking: {{ category.name }}{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2>Ranking de {{ category.name }}</h2>
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+
+        <form method="post" action="{{ path('rankings_save', {id: category.id}) }}">
+            <div class="row g-4">
+                {% for producto in productos %}
+                    {% set position = positions[producto.id]|default('') %}
+                    <div class="col-6 col-md-3 col-lg-2">
+                        <div class="card h-100 shadow-sm card-hover text-center">
+                            {% if producto.imageLink %}
+                                <img src="{{ producto.imageLink }}" class="card-img-top" alt="{{ producto.name }}">
+                            {% else %}
+                                <img src="{{ asset('img/placeholder.png') }}" class="card-img-top" alt="{{ producto.name }}">
+                            {% endif %}
+                            <div class="card-body">
+                                <h6 class="card-title">{{ producto.name }}</h6>
+
+                                <div class="mt-2">
+                                    <label class="form-label small">Posición</label>
+                                    <select name="position[{{ producto.id }}]" class="form-select form-select-sm">
+                                        {% for i in 1..productos|length %}
+                                            <option value="{{ i }}" {% if position == i %}selected{% endif %}>
+                                                {{ i }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="text-center mt-4">
+                <button class="btn btn-primary px-5">Guardar ranking</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

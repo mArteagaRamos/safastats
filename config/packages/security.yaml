@@ -38,18 +38,22 @@ security:
     # Note: Only the *first* matching rule is applied
     access_control:
         # ======= PUBLIC ======= #
+        - { path: ^/$, roles: PUBLIC_ACCESS }
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/register, roles: PUBLIC_ACCESS }
         - { path: ^/logout, roles: PUBLIC_ACCESS }
-        - { path: ^/$, roles: PUBLIC_ACCESS }
-        - { path: ^/product, roles: PUBLIC_ACCESS }
-        # ======= REVIEWS ======= #
-        - { path: ^/reviews, roles: PUBLIC_ACCESS }
-        - { path: ^/reviews/product, roles: PUBLIC_USER }
-        # ======= ADMIN ======= #
+        - { path: ^/reviews$, roles: PUBLIC_ACCESS }
+        - { path: ^/rankings$, roles: PUBLIC_ACCESS }
+
+        # ======= USUARIO ======= #
+        - { path: ^/product/\d+$, roles: ROLE_USER }
+        - { path: ^/reviews/product/\d+$, roles: ROLE_USER, methods: [ GET ] }
+        - { path: ^/rankings/category/\d+$, roles: ROLE_USER, methods: [ GET ] }
+        - { path: ^/reviews/product/\d+, roles: ROLE_USER, methods: [ POST ] }
+        - { path: ^/rankings/category/\d+, roles: ROLE_USER, methods: [ POST ] }
+
+        # ======= ADMINISTRADOR ======= #
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/edit, roles: ROLE_ADMIN }
-        - { path: ^/category, roles: ROLE_ADMIN }
 
 when@test:
     security:

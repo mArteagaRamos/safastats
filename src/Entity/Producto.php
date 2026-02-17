@@ -44,12 +44,19 @@ class Producto
     /**
      * @var Collection<int, Review>
      */
-    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'producto')]
+    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'producto', orphanRemoval: true)]
     private Collection $reviews;
+
+    /**
+     * @var Collection<int, RankingProducto>
+     */
+    #[ORM\OneToMany(targetEntity: RankingProducto::class, mappedBy: 'producto', orphanRemoval: true)]
+    private Collection $rankingProductos;
 
     public function __construct()
     {
         $this->reviews = new ArrayCollection();
+        $this->rankingProductos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -181,9 +188,38 @@ class Producto
     public function removeReview(Review $review): static
     {
         if ($this->reviews->removeElement($review)) {
-            // set the owning side to null (unless already changed)
             if ($review->getProducto() === $this) {
                 $review->setProducto(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RankingProducto>
+     */
+    public function getRankingProductos(): Collection
+    {
+        return $this->rankingProductos;
+    }
+
+    public function addRankingProducto(RankingProducto $rankingProducto): static
+    {
+        if (!$this->rankingProductos->contains($rankingProducto)) {
+            $this->rankingProductos->add($rankingProducto);
+            $rankingProducto->setProducto($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRankingProducto(RankingProducto $rankingProducto): static
+    {
+        if ($this->rankingProductos->removeElement($rankingProducto)) {
+            // set the owning side to null (unless already changed)
+            if ($rankingProducto->getProducto() === $this) {
+                $rankingProducto->setProducto(null);
             }
         }
 

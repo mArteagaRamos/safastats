@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\Ranking;
+use App\Entity\RankingProducto;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Ranking>
+ * @extends ServiceEntityRepository<RankingProducto>
  */
-class RankingRepository extends ServiceEntityRepository
+class RankingProductoRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Ranking::class);
+        parent::__construct($registry, RankingProducto::class);
     }
 
     //    /**
-    //     * @return Ranking[] Returns an array of Ranking objects
+    //     * @return RankingProducto[] Returns an array of RankingProducto objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -31,7 +31,7 @@ class RankingRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Ranking
+    //    public function findOneBySomeField($value): ?RankingProducto
     //    {
     //        return $this->createQueryBuilder('r')
     //            ->andWhere('r.exampleField = :val')

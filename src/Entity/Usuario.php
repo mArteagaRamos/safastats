@@ -35,11 +35,26 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Review>
      */
     #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'usuario')]
-    private Collection $reviews;
+    private Collection $reviews {
+        get {
+            return $this->reviews;
+        }
+    }
+
+    /**
+     * @var Collection<int, Ranking>
+     */
+    #[ORM\OneToMany(targetEntity: Ranking::class, mappedBy: 'user')]
+    private Collection $rankings {
+        get {
+            return $this->rankings;
+        }
+    }
 
     public function __construct()
     {
         $this->reviews = new ArrayCollection();
+        $this->rankings = new ArrayCollection();
         $this->role = ['ROLE_USER'];
     }
 
@@ -91,14 +106,6 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Review>
-     */
-    public function getReviews(): Collection
-    {
-        return $this->reviews;
-    }
-
     public function addReview(Review $review): static
     {
         if (!$this->reviews->contains($review)) {
@@ -121,18 +128,6 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRole(): array
-    {
-        return $this->role;
-    }
-
-    public function setRole(array $role): static
-    {
-        $this->role = $role;
-
-        return $this;
-    }
-
     public function getRoles(): array
     {
         $roles = $this->role;
@@ -142,8 +137,43 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
+    public function setRoles(array $roles): static
+    {
+        $this->role = $roles;
+        return $this;
+    }
+
     public function getUserIdentifier(): string
     {
         return $this->email;
+    }
+
+    /**
+     * @return Collection<int, Ranking>
+     */
+    public function getRankings(): Collection
+    {
+        return $this->rankings;
+    }
+
+    public function addRanking(Ranking $ranking): static
+    {
+        if (!$this->rankings->contains($ranking)) {
+            $this->rankings->add($ranking);
+            $ranking->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRanking(Ranking $ranking): static
+    {
+        if ($this->rankings->removeElement($ranking)) {
+            if ($ranking->getUser() === $this) {
+                $ranking->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

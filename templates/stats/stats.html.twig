@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stats{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2>Productos mejores valorados</h2>
+
+    <div class="row g-4 mt-3">
+        {% for item in topProductos %}
+            {% set producto = item[0] %}
+            {% set avgStars = item.avgStars|round(1) %}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                <div class="card h-100 shadow-sm text-center">
+                    {% if producto.imageLink %}
+                        <img src="{{ producto.imageLink }}" class="card-img-top" alt="{{ producto.name }}">
+                    {% else %}
+                        <img src="{{ asset('img/placeholder.png') }}" class="card-img-top" alt="{{ producto.name }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h6 class="card-title">{{ producto.name }}</h6>
+                        <div class="mt-2">
+                            {# Mostrar estrellas #}
+                            {% for i in 1..5 %}
+                                {% if avgStars >= i %}
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                {% elseif avgStars >= i - 0.5 %}
+                                    <i class="bi bi-star-half text-warning"></i>
+                                {% else %}
+                                    <i class="bi bi-star text-warning"></i>
+                                {% endif %}
+                            {% endfor %}
+                            <span class="small">{{ avgStars }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
