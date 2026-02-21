@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stats: {{ category.name }}{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2>Estadísticas de {{ category.name }}</h2>
+
+        {% if stats is empty %}
+            <div class="alert alert-info">No hay rankings aún para esta categoría.</div>
+        {% else %}
+            {# Top 3 productos destacados con medalla #}
+            <div class="row mb-5">
+                {% for i in 0..2 %}
+                    {% if stats[i] is defined %}
+                        {% set item = stats[i] %}
+                        <div class="col-12 col-md-4">
+                            <div class="card text-center shadow-sm mb-3 position-relative">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ item.producto.name }}</h5>
+                                    {# Medalla según posición #}
+                                    <img src="{{ asset('img/medalla' ~ (i + 1) ~ '.png') }}"
+                                         alt="Medalla {{ i + 1 }}"
+                                         style="width: 50px; height: 50px; z-index: 10;">
+                                    <p class="mb-1">Posición promedio: {{ item.avgPosition|number_format(2, '.', ',') }}</p>
+                                    <p>
+                                        {% set stars = 6 - item.avgPosition|round(0, 'ceil') %}
+                                        {% for s in 1..5 %}
+                                            {% if s <= stars %}
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                            {% else %}
+                                                <i class="bi bi-star text-secondary"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            {# Tabla con el resto de productos #}
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Posición promedio</th>
+                    <th>Producto</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in stats %}
+                    <tr>
+                        <td>{{ item.avgPosition|number_format(2, '.', ',') }}</td>
+                        <td>{{ item.producto.name }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}

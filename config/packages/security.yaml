@@ -44,6 +44,7 @@ security:
         - { path: ^/logout, roles: PUBLIC_ACCESS }
         - { path: ^/reviews$, roles: PUBLIC_ACCESS }
         - { path: ^/rankings$, roles: PUBLIC_ACCESS }
+        - { path: ^/stats, roles: PUBLIC_ACCESS }
 
         # ======= USUARIO ======= #
         - { path: ^/product/\d+$, roles: ROLE_USER }

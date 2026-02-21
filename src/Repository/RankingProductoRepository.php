@@ -16,6 +16,22 @@ class RankingProductoRepository extends ServiceEntityRepository
         parent::__construct($registry, RankingProducto::class);
     }
 
+    public function getStatsByCategory(int $categoryId): array
+    {
+        return $this->createQueryBuilder('rp')
+            ->select('rp')
+            ->addSelect('AVG(rp.position) AS avgPosition')
+            ->join('rp.producto', 'p')
+            ->join('rp.ranking', 'r')
+            ->join('r.category', 'c')
+            ->where('c.id = :categoryId')
+            ->setParameter('categoryId', $categoryId)
+            ->groupBy('p.id')
+            ->orderBy('avgPosition', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return RankingProducto[] Returns an array of RankingProducto objects
     //     */
